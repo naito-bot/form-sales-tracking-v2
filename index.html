@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex">
+  <title>株式会社高卒採用バンク</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+    .card {
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 40px 32px;
+      max-width: 480px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    }
+    .dept {
+      font-size: 13px;
+      color: #888888;
+      margin-bottom: 6px;
+    }
+    .company {
+      font-size: 18px;
+      font-weight: bold;
+      color: #333333;
+      margin-bottom: 24px;
+    }
+    .divider {
+      height: 1px;
+      background: #eeeeee;
+      margin-bottom: 24px;
+    }
+    h1 {
+      font-size: 20px;
+      color: #333333;
+      margin-bottom: 12px;
+      line-height: 1.5;
+    }
+    .subtitle {
+      font-size: 14px;
+      color: #666666;
+      margin-bottom: 32px;
+      line-height: 1.7;
+    }
+    .btn {
+      display: block;
+      text-decoration: none;
+      padding: 16px 24px;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: bold;
+      margin-bottom: 16px;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+    .btn-calendar {
+      background: #4285f4;
+      color: #ffffff;
+    }
+    .btn-document {
+      background: #ffffff;
+      color: #4285f4;
+      border: 2px solid #4285f4;
+    }
+    .note {
+      margin-top: 24px;
+      font-size: 12px;
+      color: #aaaaaa;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="dept">HRコンサルティング事業部</div>
+    <div class="company">株式会社高卒採用バンク</div>
+    <div class="divider"></div>
+    <h1>ご興味をお持ちいただき<br>ありがとうございます</h1>
+    <p class="subtitle">
+      以下よりご希望の内容をお選びください。<br>
+      日程のご調整、またはサービス資料をご確認いただけます。
+    </p>
+    <a id="btn-calendar" class="btn btn-calendar" target="_blank" rel="noopener noreferrer">
+      日程を調整する
+    </a>
+    <a id="btn-document" class="btn btn-document" target="_blank" rel="noopener noreferrer">
+      サービス資料を見る
+    </a>
+    <p class="note">
+      ボタンをクリックすると新しいタブで開きます
+    </p>
+  </div>
+
+  <script>
+    // 設定（GitHub Pagesにデプロイする際はここを編集）
+    const CALENDAR_URL = "https://calendar.app.google/EBr9XZbdUP7snF7M9";
+    const DOCUMENT_URL = "https://docs.google.com/presentation/d/1iGAHMK7OJtkR1lQzT2ieEw2QEGkhjkGn/edit?usp=sharing";
+    // クリック記録用 Apps Script のURL（デプロイ後に差し替える）
+    const LOGGER_URL = "REPLACE_WITH_APPS_SCRIPT_URL";
+
+    // URLパラメータを取得
+    const params = new URLSearchParams(window.location.search);
+    const companyId = params.get("id") || "unknown";
+    const companyName = decodeURIComponent(params.get("name") || "");
+
+    // ボタンのリンクを設定
+    document.getElementById("btn-calendar").href = CALENDAR_URL;
+    document.getElementById("btn-document").href = DOCUMENT_URL;
+
+    // クリックを記録する関数
+    function logClick(linkType) {
+      if (LOGGER_URL && LOGGER_URL.indexOf("REPLACE") === -1) {
+        const url = LOGGER_URL
+          + "?id=" + encodeURIComponent(companyId)
+          + "&name=" + encodeURIComponent(companyName)
+          + "&link=" + encodeURIComponent(linkType);
+        // バックグラウンドで記録（エラーは無視）
+        fetch(url, { mode: "no-cors" }).catch(function () {});
+      }
+    }
+
+    // ページを開いた時点でアクセスを記録
+    logClick("page_open");
+
+    // 各ボタンのクリックを記録
+    document.getElementById("btn-calendar").addEventListener("click", function () {
+      logClick("calendar");
+    });
+    document.getElementById("btn-document").addEventListener("click", function () {
+      logClick("document");
+    });
+  </script>
+</body>
+</html>
